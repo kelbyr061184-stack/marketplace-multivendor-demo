@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar eliminación{% endblock %}
+
+{% block content %}
+<h1>¿Estás seguro de eliminar este {{ tipo }}?</h1>
+<p>{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'mis_anuncios' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Comparar vehículos{% endblock %}
+
+{% block content %}
+<h1>Comparar vehículos</h1>
+
+{% if vehiculos %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Característica</th>
+                    {% for vehiculo in vehiculos %}
+                        <th>
+                            {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})
+                            <br><small class="text-muted">
+                                {% if vehiculo|get_class == 'Coche' %}Coche{% else %}Moto{% endif %}
+                            </small>
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Precio -->
+                <tr>
+                    <th>Precio</th>
+                    {% for vehiculo in vehiculos %}
+                        <td>${{ vehiculo.precio }}</td>
+                    {% endfor %}
+                </tr>
+                <!-- Kilometraje -->
+                <tr>
+                    <th>Kilometraje</th>
+                    {% for vehiculo in vehiculos %}
+                        <td>{{ vehiculo.kilometraje }} km</td>
+                    {% endfor %}
+                </tr>
+                <!-- Ubicación -->
+                <tr>
+                    <th>Ubicación</th>
+                    {% for vehiculo in vehiculos %}
+                        <td>{{ vehiculo.ubicacion }}</td>
+                    {% endfor %}
+                </tr>
+                
+                {% if vehiculos.0|get_class == 'Coche' %}
+                    <!-- Especificaciones de coche -->
+                    <tr><th colspan="{{ vehiculos|length|add:1 }}" class="table-secondary">Especificaciones del coche</th></tr>
+                    <tr>
+                        <th>Combustible</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_tipo_combustible_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Transmisión</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_transmision_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Cilindrada</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.cilindrada }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Potencia</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.potencia }} CV</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Puertas</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.num_puertas }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Color</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.color }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Plazas</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.num_plazas }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Carrocería</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_carroceria_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Tracción</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_traccion_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Dirección asistida</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.direccion_asistida|yesno:"Sí,No" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Aire acondicionado</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.aire_acondicionado|yesno:"Sí,No" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>ABS</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.abs|yesno:"Sí,No" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Airbags</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.airbags }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Garantía</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.garantia }}</td>
+                        {% endfor %}
+                    </tr>
+                {% else %}
+                    <!-- Especificaciones de moto -->
+                    <tr><th colspan="{{ vehiculos|length|add:1 }}" class="table-secondary">Especificaciones de la moto</th></tr>
+                    <tr>
+                        <th>Tipo</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_tipo_moto_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Cilindrada</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.cilindrada }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Potencia</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.potencia }} CV</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Motor</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.tipo_motor }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Refrigeración</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.refrigeracion }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Arranque</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_arranque_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Cambio</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.get_cambio_display }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Nº marchas</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.num_marchas }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Freno delantero</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.freno_delantera }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Freno trasero</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.freno_trasera }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>ABS</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.abs|yesno:"Sí,No" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Capacidad tanque</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.capacidad_tanque }} L</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Peso</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.peso }} kg</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Color</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.color }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Garantía</th>
+                        {% for vehiculo in vehiculos %}
+                            <td>{{ vehiculo.garantia }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                <!-- Descripción -->
+                <tr>
+                    <th>Descripción</th>
+                    {% for vehiculo in vehiculos %}
+                        <td>{{ vehiculo.descripcion|truncatewords:20 }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <a href="javascript:history.back()" class="btn btn-secondary">Volver</a>
+    
+{% else %}
+    <div class="alert alert-warning">
+        No se seleccionaron vehículos para comparar. 
+        <a href="{% url 'lista_vehiculos' %}" class="alert-link">Volver al listado</a> y selecciona algunos.
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{% if tienda %}Editar tienda{% else %}Crear tienda{% endif %}{% endblock %}
+
+{% block content %}
+<h1 class="mb-3">{% if tienda %}Editar tienda{% else %}Crear tienda{% endif %}</h1>
+
+<form method="post" enctype="multipart/form-data" class="card p-3">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'vendor_dashboard' %}" class="btn btn-secondary">Volver</a>
+  </div>
+</form>
+{% endblock %}

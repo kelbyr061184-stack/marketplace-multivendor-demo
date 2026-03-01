@@ -1,0 +1,24 @@
+# secrets
+.env
+.env.*
+*.key
+
+# virtual environments
+venv/
+.venv/
+.venv/**
+.virtualenvs/
+
+# database
+db.sqlite3
+
+# user uploads & collected static
+media/
+staticfiles/
+
+# python cache
+__pycache__/
+*.pyc
+
+# tests/cache
+.pytest_cache/

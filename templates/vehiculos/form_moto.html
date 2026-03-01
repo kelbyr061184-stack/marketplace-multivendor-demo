@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ accion }}{% endblock %}
+
+{% block content %}
+<h1>{{ accion }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{% url 'mis_anuncios' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<script>
+  // Dropdown dependiente: Marca -> Modelos
+  (function() {
+    const marcaEl = document.getElementById('id_marca');
+    const modeloEl = document.getElementById('id_modelo');
+    if (!marcaEl || !modeloEl) return;
+
+    async function cargarModelos() {
+      const marcaId = marcaEl.value;
+      if (!marcaId) return;
+      const resp = await fetch(`{% url 'api_modelos_por_marca' %}?marca_id=${marcaId}&tipo=moto`);
+      const data = await resp.json();
+      const current = modeloEl.value;
+      modeloEl.innerHTML = '';
+      const opt0 = document.createElement('option');
+      opt0.value = '';
+      opt0.textContent = '---------';
+      modeloEl.appendChild(opt0);
+      data.results.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item.nombre;
+        modeloEl.appendChild(opt);
+      });
+      if (current) modeloEl.value = current;
+    }
+    marcaEl.addEventListener('change', cargarModelos);
+  })();
+
+  // Campos condicionales: mostrar num_marchas solo si cambio es manual
+  (function() {
+    const cambioEl = document.getElementById('id_cambio');
+    const numMarchasEl = document.getElementById('id_num_marchas');
+    if (!cambioEl || !numMarchasEl) return;
+    const row = numMarchasEl.closest('p') || numMarchasEl.closest('div');
+
+    function toggle() {
+      const isManual = (cambioEl.value === 'manual');
+      if (row) row.style.display = isManual ? '' : 'none';
+      if (!isManual) numMarchasEl.value = '';
+    }
+    cambioEl.addEventListener('change', toggle);
+    toggle();
+  })();
+</script>
+{% endblock %}

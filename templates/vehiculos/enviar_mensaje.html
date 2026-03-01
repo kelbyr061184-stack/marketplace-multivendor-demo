@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Enviar mensaje{% endblock %}
+
+{% block content %}
+<h1>Enviar mensaje</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="receptor" class="form-label">Destinatario</label>
+        <select name="receptor_id" id="receptor" class="form-select" required>
+            {% if receptor %}
+                <option value="{{ receptor.id }}" selected>{{ receptor.username }}</option>
+            {% else %}
+                <option value="">Selecciona un usuario</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="asunto" class="form-label">Asunto</label>
+        <input type="text" name="asunto" id="asunto" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="cuerpo" class="form-label">Mensaje</label>
+        <textarea name="cuerpo" id="cuerpo" rows="5" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a href="{% url 'bandeja_entrada' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

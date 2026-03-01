@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tienda.nombre_tienda }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+  <div>
+    <h1 class="mb-1">{{ tienda.nombre_tienda }}</h1>
+    {% if tienda.descripcion %}<p class="text-muted mb-1">{{ tienda.descripcion }}</p>{% endif %}
+    <p class="mb-0">
+      <strong>Vendedor:</strong> {{ tienda.vendedor.username }}
+      {% if tienda.vendedor.telefono %} | <strong>Tel:</strong> {{ tienda.vendedor.telefono }}{% endif %}
+    </p>
+    <p class="mb-0">
+      {% if tienda.ciudad %}<strong>Ciudad:</strong> {{ tienda.ciudad }}{% endif %}
+      {% if tienda.direccion %} | <strong>Dirección:</strong> {{ tienda.direccion }}{% endif %}
+    </p>
+  </div>
+  {% if user.is_authenticated and user == tienda.vendedor %}
+    <div>
+      <a class="btn btn-primary" href="{% url 'vendor_dashboard' %}">Ir a mi panel</a>
+    </div>
+  {% endif %}
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Coches</h2>
+    <div class="list-group">
+      {% for coche in coches %}
+        <a class="list-group-item list-group-item-action" href="{% url 'detalle_coche' coche.id %}">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>{{ coche.marca.nombre }} {{ coche.modelo.nombre }} ({{ coche.anio }})</strong>
+              <div class="text-muted small">{{ coche.ubicacion }} | {{ coche.kilometraje }} km</div>
+            </div>
+            <div class="text-end">
+              {% if coche.destacado %}<span class="badge bg-warning text-dark">Destacado</span><br>{% endif %}
+              <strong>${{ coche.precio }}</strong>
+            </div>
+          </div>
+        </a>
+      {% empty %}
+        <div class="text-muted">Esta tienda aún no tiene coches publicados.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <h2>Motos</h2>
+    <div class="list-group">
+      {% for moto in motos %}
+        <a class="list-group-item list-group-item-action" href="{% url 'detalle_moto' moto.id %}">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>{{ moto.marca.nombre }} {{ moto.modelo.nombre }} ({{ moto.anio }})</strong>
+              <div class="text-muted small">{{ moto.ubicacion }} | {{ moto.kilometraje }} km</div>
+            </div>
+            <div class="text-end">
+              {% if moto.destacado %}<span class="badge bg-warning text-dark">Destacado</span><br>{% endif %}
+              <strong>${{ moto.precio }}</strong>
+            </div>
+          </div>
+        </a>
+      {% empty %}
+        <div class="text-muted">Esta tienda aún no tiene motos publicadas.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

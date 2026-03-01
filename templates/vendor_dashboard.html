@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Vendedor{% endblock %}
+
+{% block content %}
+<h1>Panel de Vendedor</h1>
+<p>Bienvenido a tu panel de control, {{ user.username }}.</p>
+
+<h2>Tu tienda</h2>
+{% if tienda %}
+    <p><strong>Nombre:</strong> {{ tienda.nombre_tienda }}</p>
+    <p><strong>Descripción:</strong> {{ tienda.descripcion }}</p>
+    <p><strong>Ciudad:</strong> {{ tienda.ciudad }}</p>
+    <div class="mb-3">
+        <a href="{% url 'tienda_crear_editar' %}" class="btn btn-primary">Editar tienda</a>
+        <a href="{% url 'tienda_publica' tienda.id %}" class="btn btn-outline-secondary">Ver mini-tienda pública</a>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Inventario</h5>
+                    <p class="card-text">Coches: <strong>{{ total_coches }}</strong> (pendientes: {{ pendientes_coches }})</p>
+                    <p class="card-text">Motos: <strong>{{ total_motos }}</strong> (pendientes: {{ pendientes_motos }})</p>
+                    <a href="{% url 'mis_anuncios' %}" class="btn btn-success">Gestionar anuncios</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Leads / Solicitudes</h5>
+                    <p class="card-text">Nuevos: <strong>{{ leads_nuevos }}</strong></p>
+                    <a href="{% url 'mis_leads' %}" class="btn btn-outline-primary">Ver solicitudes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mensajes</h5>
+                    <p class="card-text">Revisa tu bandeja para responder a interesados.</p>
+                    <a href="{% url 'bandeja_entrada' %}" class="btn btn-outline-dark">Bandeja</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p>Aún no tienes una tienda. Los vendedores deben tener una tienda para publicar anuncios.</p>
+    <a href="{% url 'tienda_crear_editar' %}" class="btn btn-success">Crear tienda</a>
+{% endif %}
+{% endblock %}

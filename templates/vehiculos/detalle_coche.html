@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ vehiculo.marca }} {{ vehiculo.modelo }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <h1>{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})</h1>
+        <p><strong>Precio:</strong> ${{ vehiculo.precio }}</p>
+        <p><strong>Vendedor:</strong>
+            <a href="{% url 'tienda_publica' vehiculo.tienda.id %}">{{ vehiculo.tienda.nombre_tienda }}</a>
+            {% if vehiculo.tienda.vendedor.telefono %}<br><small>Tel: {{ vehiculo.tienda.vendedor.telefono }}</small>{% endif %}
+        </p>
+        <p><strong>Ubicación:</strong> {{ vehiculo.ubicacion }}</p>
+        <p><strong>Kilometraje:</strong> {{ vehiculo.kilometraje }} km</p>
+        <hr>
+        <h3>Ficha técnica</h3>
+        <table class="table table-striped">
+            <tr><th>Combustible</th><td>{{ vehiculo.get_tipo_combustible_display }}</td></tr>
+            <tr><th>Transmisión</th><td>{{ vehiculo.get_transmision_display }}</td></tr>
+            <tr><th>Cilindrada</th><td>{{ vehiculo.cilindrada }}</td></tr>
+            <tr><th>Potencia</th><td>{{ vehiculo.potencia }} CV</td></tr>
+            <tr><th>Puertas</th><td>{{ vehiculo.num_puertas }}</td></tr>
+            <tr><th>Color</th><td>{{ vehiculo.color }}</td></tr>
+            <tr><th>Plazas</th><td>{{ vehiculo.num_plazas }}</td></tr>
+            <tr><th>Carrocería</th><td>{{ vehiculo.get_carroceria_display }}</td></tr>
+            <tr><th>Tracción</th><td>{{ vehiculo.get_traccion_display }}</td></tr>
+            <tr><th>Dirección asistida</th><td>{{ vehiculo.direccion_asistida|yesno:"Sí,No" }}</td></tr>
+            <tr><th>Aire acondicionado</th><td>{{ vehiculo.aire_acondicionado|yesno:"Sí,No" }}</td></tr>
+            <tr><th>ABS</th><td>{{ vehiculo.abs|yesno:"Sí,No" }}</td></tr>
+            <tr><th>Airbags</th><td>{{ vehiculo.airbags }}</td></tr>
+            <tr><th>Garantía</th><td>{{ vehiculo.garantia }}</td></tr>
+        </table>
+        <p><strong>Descripción:</strong> {{ vehiculo.descripcion }}</p>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Contactar</h3>
+
+                {% if user.is_authenticated and user.id != vehiculo.tienda.vendedor.id %}
+                    <div class="mb-3">
+                        <a class="btn btn-outline-dark" href="{% url 'enviar_mensaje' vehiculo.tienda.vendedor.id %}">Chatear con el vendedor</a>
+                    </div>
+                {% elif not user.is_authenticated %}
+                    <div class="alert alert-info">Puedes enviar una solicitud sin cuenta, o iniciar sesión para chatear.</div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ lead_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

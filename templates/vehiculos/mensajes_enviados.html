@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Mensajes enviados{% endblock %}
+
+{% block content %}
+<h1>Mensajes enviados</h1>
+<a href="{% url 'bandeja_entrada' %}" class="btn btn-primary mb-3">Volver a bandeja</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Asunto</th>
+            <th>Para</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mensaje in mensajes %}
+        <tr>
+            <td>{{ mensaje.asunto }}</td>
+            <td>{{ mensaje.receptor.username }}</td>
+            <td>{{ mensaje.fecha_envio|date:"d/m/Y H:i" }}</td>
+            <td><a href="{% url 'ver_mensaje' mensaje.id %}" class="btn btn-sm btn-info">Ver</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No has enviado mensajes.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

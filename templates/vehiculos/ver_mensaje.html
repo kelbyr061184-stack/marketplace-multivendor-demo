@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Mensaje{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ mensaje.asunto }}</h3>
+        <p class="text-muted">
+            De: {{ mensaje.emisor.username }} - Para: {{ mensaje.receptor.username }}<br>
+            Fecha: {{ mensaje.fecha_envio|date:"d/m/Y H:i" }}
+        </p>
+    </div>
+    <div class="card-body">
+        <p>{{ mensaje.cuerpo|linebreaks }}</p>
+    </div>
+    <div class="card-footer">
+        <a href="javascript:history.back()" class="btn btn-secondary">Volver</a>
+        {% if mensaje.emisor != request.user %}
+            <a href="{% url 'enviar_mensaje' mensaje.emisor.id %}" class="btn btn-primary">Responder</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

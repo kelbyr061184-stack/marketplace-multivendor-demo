@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Solicitud #{{ lead.id }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+  <div>
+    <h1 class="mb-1">Solicitud #{{ lead.id }}</h1>
+    <div class="text-muted">{{ lead.get_tipo_vehiculo_display }} | Vehículo ID {{ lead.vehiculo_id }}</div>
+  </div>
+  <div>
+    <a class="btn btn-secondary" href="{% url 'mis_leads' %}">Volver</a>
+    {% if vehiculo_url %}
+      <a class="btn btn-outline-primary" href="{{ vehiculo_url }}">Ver vehículo</a>
+    {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Datos del interesado</h5>
+        <p class="mb-1"><strong>Nombre:</strong> {{ lead.nombre }}</p>
+        <p class="mb-1"><strong>Email:</strong> {{ lead.email }}</p>
+        <p class="mb-1"><strong>Teléfono:</strong> {{ lead.telefono|default:"—" }}</p>
+        <p class="mb-0"><strong>Creado:</strong> {{ lead.creado_en }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Mensaje</h5>
+        <p class="mb-0" style="white-space: pre-wrap;">{{ lead.mensaje|default:"(Sin mensaje)" }}</p>
+      </div>
+    </div>
+  </div>
+
+  {% if user.id == lead.vendedor_id %}
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Gestión</h5>
+        <form method="post" class="d-flex gap-2 align-items-end flex-wrap">
+          {% csrf_token %}
+          <div>
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select">
+              {% for k, v in estados %}
+                <option value="{{ k }}" {% if lead.estado == k %}selected{% endif %}>{{ v }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-primary" type="submit">Actualizar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

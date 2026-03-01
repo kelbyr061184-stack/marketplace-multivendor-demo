@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vehículos en venta{% endblock %}
+
+{% block content %}
+<h1>Vehículos en venta</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h4>Filtrar búsqueda</h4>
+            </div>
+            <div class="card-body">
+                <form method="get">
+                    <h5>Coches</h5>
+                    {{ coche_filter.form.as_p }}
+                    <hr>
+                    <h5>Motos</h5>
+                    {{ moto_filter.form.as_p }}
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a href="{% url 'lista_vehiculos' %}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <form method="get" action="{% url 'comparar' %}">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Coches</h2>
+                    <div class="list-group">
+                        {% for coche in coche_page %}
+                            <div class="list-group-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="coche" value="{{ coche.id }}" id="coche{{ coche.id }}">
+                                    <label class="form-check-label" for="coche{{ coche.id }}">
+                                        <strong>{{ coche.marca.nombre }} {{ coche.modelo.nombre }} ({{ coche.anio }})</strong>
+                                        {% if coche.destacado %}<span class="badge bg-warning text-dark ms-1">Destacado</span>{% endif %}
+                                        - ${{ coche.precio }}
+                                        <br><small>{{ coche.ubicacion }} | {{ coche.kilometraje }} km</small>
+                                    </label>
+                                </div>
+                                <a href="{% url 'detalle_coche' coche.id %}" class="stretched-link"></a>
+                            </div>
+                        {% empty %}
+                            <p>No hay coches que coincidan con los filtros.</p>
+                        {% endfor %}
+
+                        {% if coche_page.paginator.num_pages > 1 %}
+                          <nav class="mt-2">
+                            <ul class="pagination pagination-sm">
+                              {% if coche_page.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?{% if coche_query %}{{ coche_query }}&{% endif %}cpage={{ coche_page.previous_page_number }}">Anterior</a></li>
+                              {% else %}
+                                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                              {% endif %}
+
+                              <li class="page-item disabled"><span class="page-link">Página {{ coche_page.number }} de {{ coche_page.paginator.num_pages }}</span></li>
+
+                              {% if coche_page.has_next %}
+                                <li class="page-item"><a class="page-link" href="?{% if coche_query %}{{ coche_query }}&{% endif %}cpage={{ coche_page.next_page_number }}">Siguiente</a></li>
+                              {% else %}
+                                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                              {% endif %}
+                            </ul>
+                          </nav>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2>Motos</h2>
+                    <div class="list-group">
+                        {% for moto in moto_page %}
+                            <div class="list-group-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="moto" value="{{ moto.id }}" id="moto{{ moto.id }}">
+                                    <label class="form-check-label" for="moto{{ moto.id }}">
+                                        <strong>{{ moto.marca.nombre }} {{ moto.modelo.nombre }} ({{ moto.anio }})</strong>
+                                        {% if moto.destacado %}<span class="badge bg-warning text-dark ms-1">Destacado</span>{% endif %}
+                                        - ${{ moto.precio }}
+                                        <br><small>{{ moto.ubicacion }} | {{ moto.kilometraje }} km</small>
+                                    </label>
+                                </div>
+                                <a href="{% url 'detalle_moto' moto.id %}" class="stretched-link"></a>
+                            </div>
+                        {% empty %}
+                            <p>No hay motos que coincidan con los filtros.</p>
+                        {% endfor %}
+
+                        {% if moto_page.paginator.num_pages > 1 %}
+                          <nav class="mt-2">
+                            <ul class="pagination pagination-sm">
+                              {% if moto_page.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?{% if moto_query %}{{ moto_query }}&{% endif %}mpage={{ moto_page.previous_page_number }}">Anterior</a></li>
+                              {% else %}
+                                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                              {% endif %}
+
+                              <li class="page-item disabled"><span class="page-link">Página {{ moto_page.number }} de {{ moto_page.paginator.num_pages }}</span></li>
+
+                              {% if moto_page.has_next %}
+                                <li class="page-item"><a class="page-link" href="?{% if moto_query %}{{ moto_query }}&{% endif %}mpage={{ moto_page.next_page_number }}">Siguiente</a></li>
+                              {% else %}
+                                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                              {% endif %}
+                            </ul>
+                          </nav>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Comparar seleccionados</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Destacar anuncio{% endblock %}
+
+{% block content %}
+<h1>Destacar anuncio</h1>
+<p>Vas a destacar el siguiente vehículo:</p>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})</h5>
+        <p class="card-text">Precio del anuncio: ${{ vehiculo.precio }}</p>
+        <p class="card-text"><strong>Coste para destacar: {{ precio }} €</strong></p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary mt-3">Pagar con Stripe</button>
+    <a href="{% url 'mis_anuncios' %}" class="btn btn-secondary mt-3">Cancelar</a>
+</form>
+{% endblock %}

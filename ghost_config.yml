@@ -1,0 +1,10 @@
+provider: groq
+model: llama-3.3-70b-versatile
+test_dir: ghost_tests
+watch_delay: 2
+exclude:
+  - venv
+  - .git
+  - __pycache__
+  - "*.pyc"
+  - .env

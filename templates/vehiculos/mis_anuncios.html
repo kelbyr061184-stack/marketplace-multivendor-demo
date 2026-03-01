@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Mis anuncios{% endblock %}
+
+{% block content %}
+<h1>Mis anuncios (Tienda: {{ tienda.nombre_tienda }})</h1>
+
+<div class="mb-3">
+    <a href="{% url 'crear_coche' %}" class="btn btn-primary">Publicar coche</a>
+    <a href="{% url 'crear_moto' %}" class="btn btn-primary">Publicar moto</a>
+</div>
+
+<h2>Coches</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Precio</th>
+            <th>Activo</th>
+            <th>Destacado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for coche in coches %}
+        <tr>
+            <td>{{ coche.marca }} {{ coche.modelo }}</td>
+            <td>{{ coche.anio }}</td>
+            <td>${{ coche.precio }}</td>
+            <td>{{ coche.activo|yesno:"Sí,No" }}</td>
+            <td>
+                {% if coche.destacado %}
+                    <span class="badge bg-success">Destacado</span>
+                {% else %}
+                    <span class="badge bg-secondary">No destacado</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'editar_coche' coche.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'detalle_coche' coche.id %}" class="btn btn-sm btn-outline-secondary">Ver</a>
+                <a href="{% url 'eliminar_coche' coche.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                {% if not coche.destacado %}
+                    <a href="{% url 'pagar_destacar' 'coche' coche.id %}" class="btn btn-sm btn-success">Destacar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No tienes coches publicados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="mt-4">Motos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Precio</th>
+            <th>Activo</th>
+            <th>Destacado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for moto in motos %}
+        <tr>
+            <td>{{ moto.marca }} {{ moto.modelo }}</td>
+            <td>{{ moto.anio }}</td>
+            <td>${{ moto.precio }}</td>
+            <td>{{ moto.activo|yesno:"Sí,No" }}</td>
+            <td>
+                {% if moto.destacado %}
+                    <span class="badge bg-success">Destacado</span>
+                {% else %}
+                    <span class="badge bg-secondary">No destacado</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'editar_moto' moto.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'detalle_moto' moto.id %}" class="btn btn-sm btn-outline-secondary">Ver</a>
+                <a href="{% url 'eliminar_moto' moto.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                {% if not moto.destacado %}
+                    <a href="{% url 'pagar_destacar' 'moto' moto.id %}" class="btn btn-sm btn-success">Destacar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No tienes motos publicadas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
