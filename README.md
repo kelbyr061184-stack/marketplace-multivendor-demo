@@ -1,68 +1,91 @@
-# Marketplace Multivendor de Autos y Motos (Django) — Live Demo
+# Mercado multivendor de autos y motos usados (Django 6) — Live Demo
 
-🚗🏍️ Marketplace multiproveedor para **coches y motos usados**, con **mini-tiendas por vendedor**, publicación de anuncios, ficha técnica detallada, filtros avanzados, comparación y módulo de contacto (leads/mensajería).
+Aplicación web multiproveedor para publicar y explorar **autos y motos de segunda mano**.  
+Cada vendedor puede crear su **mini-tienda**, publicar inventario y gestionar solicitudes de clientes.  
+La prioridad del producto es la **ficha técnica detallada** por vehículo (core feature), con filtros avanzados y herramienta de comparación.
 
-✅ **Live demo:** https://kelby1984.pythonanywhere.com  
-✅ **Repositorio:** https://github.com/kelbyr061184-stack/marketplace-multivendor-demo  
-✅ **Release:** v1.0-demo
+✅ **Demo en vivo:** https://kelby1984.pythonanywhere.com  
+✅ **Release:** v1.0-demo  
+✅ **Release link:** https://github.com/kelbyr061184-stack/marketplace-multivendor-demo/releases/tag/v1.0-demo  
+✅ **Repositorio:** https://github.com/kelbyr061184-stack/marketplace-multivendor-demo
 
 ---
 
-## Funcionalidades principales
+## 1) Qué puede probar un cliente en la demo (2–3 minutos)
 
-### Para vendedores (mini-tiendas)
-- Registro/login (multi-rol: comprador/vendedor).
-- **Mini-tienda por vendedor** con inventario público.
-- Publicación de anuncios de **coche** y **moto**.
-- Panel del vendedor (gestión de anuncios y solicitudes/leads).
+1) Registrarse como **vendedor**  
+2) Crear/editar su **mini-tienda**  
+3) Publicar 1 **auto** y 1 **moto**  
+4) Abrir el detalle del anuncio y revisar la **ficha técnica completa**  
+5) Probar **búsqueda/filtros** y el **comparador**
 
-### Para compradores
-- Navegación optimizada para “test drive”: listado claro, enfoque en datos y especificaciones.
-- **Búsqueda y filtros**: marca, modelo, año, kilometraje, rango de precio, ubicación.
+> Para evaluación rápida se pueden facilitar credenciales demo por mensaje (no se publican en el repo por seguridad).
+
+---
+
+## 2) Alcance funcional (resumen)
+
+### 2.1 Funcionalidades para vendedores (mini-tiendas)
+- Registro/login con roles (comprador/vendedor).
+- **Mini-tienda pública** por vendedor (perfil + inventario).
+- Publicación de anuncios de **autos** y **motos**.
+- Panel del vendedor: gestión de anuncios y **leads/solicitudes**.
+
+### 2.2 Funcionalidades para compradores
+- Listados de autos y motos con navegación centrada en datos.
+- **Filtros avanzados:** marca, modelo, año, kilometraje, rango de precio, ubicación.
 - **Comparador** de vehículos.
-- **Ficha técnica completa** (core feature) en el detalle de cada anuncio.
-- Contacto al vendedor vía **leads (solicitudes)** y mensajería interna.
+- Vista detalle con **tabla de especificaciones técnicas**.
+- Contacto con el vendedor mediante **leads/solicitudes** y mensajería interna.
 
-### Administración
-- Aprobación de listados (publicación moderada).
+### 2.3 Administración
+- Aprobación/moderación de listados (publicación controlada).
 - Gestión de datos base (marcas/modelos).
-- Exportación de datos (admin).
-- Configuración básica de plataforma (tarifas/comisiones a nivel de config).
+- Exportación de datos desde admin.
+- Configuración base de plataforma (tarifas/comisiones a nivel de configuración).
 
-### Pagos (opcional)
-- Integración base con **Stripe** para upgrades (por ejemplo, “destacar anuncio”).
-- En demo pública los pagos pueden mantenerse desactivados (modo gratuito).
+### 2.4 Pagos (opcional)
+- Integración base con **Stripe** para upgrades (ej. “destacar anuncio”).
+- En demo pública se puede mantener modo gratuito (sin pagos reales).
 
 ---
 
-## Stack / Tecnologías
+## 3) Qué NO incluye (para evitar malentendidos)
+- Checkout de compra del vehículo (marketplaces de usados suelen funcionar por **leads**).
+- Chat en tiempo real tipo WhatsApp (la demo incluye mensajería básica; realtime es un upgrade).
+- Login social activo por defecto (requiere credenciales reales + HTTPS en producción).
+
+---
+
+## 4) Arquitectura / Módulos principales
+- `accounts`: usuarios (roles), tiendas, panel del vendedor
+- `vehiculos`: modelos de coche/moto, filtros, comparación, leads, mensajería, Stripe (opcional)
+- `templates`: interfaz Bootstrap 5
+- `config`: settings y urls del proyecto
+
+---
+
+## 5) Stack / Tecnologías
 - **Backend:** Django 6
 - **Frontend:** Bootstrap 5 (responsive)
-- **Auth:** django-allauth (social login opcional en producción)
+- **Auth:** django-allauth (login social opcional en producción)
 - **Filtros:** django-filter
-- **Admin export:** django-import-export
+- **Exportación admin:** django-import-export
 - **Pagos (opcional):** Stripe
 
 ---
 
-## Cómo probar (flujo recomendado)
-1) Registrarse como **vendedor**
-2) Crear la **mini-tienda**
-3) Publicar 1 **coche** y 1 **moto**
-4) Abrir el detalle de cada anuncio y revisar la **ficha técnica**
-5) Probar filtros y comparación
+## 6) Instalación local (SQLite) — Paso a paso
 
-> 💡 Para evaluación rápida, puedo facilitar credenciales demo por solicitud (no se publican en el repo por seguridad).
+### 6.1 Requisitos
+- Python 3.12+ (Django 6 lo requiere)
 
----
-
-## Instalación local (SQLite)
-
-### 1) Crear entorno e instalar dependencias
+### 6.2 Crear entorno e instalar dependencias
 ```bash
 python -m venv .venv
-# activar entorno
-# Windows: .\.venv\Scripts\activate
+
+# Activar entorno:
+# Windows PowerShell: .\.venv\Scripts\Activate.ps1
 # Linux/Mac: source .venv/bin/activate
 
 pip install -r requirements.txt
